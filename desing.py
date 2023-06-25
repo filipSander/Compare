@@ -3,6 +3,42 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 
+def showDialog(msg):
+    msgBox = QtWidgets.QMessageBox()
+    msgBox.setText(msg)
+    msgBox.setIcon(QtWidgets.QMessageBox.Information)
+    msgBox.setStyleSheet("""
+    QMessageBox{
+        color: white;
+        background-color: #121212;
+        font-family: Rubik;
+        border-radius: 6px;
+    }
+    QLabel{
+        color: white;
+        font-family: Rubik;
+    }
+    QPushButton{
+        color: white;
+        width: 60px;
+        height: 30px;
+        background-color: transparent;
+        border-radius: 6px;
+    }
+    QPushButton:hover{
+        background-color: #666;
+    }
+    QPushButton:pressed{
+        background-color: #888;
+    }
+    """)
+    msgBox.setWindowTitle("Внимание")
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msgBox.show()
+    returnValue = msgBox.exec()
+    if returnValue == QtWidgets.QMessageBox.Ok:
+        print('OK clicked')
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -25,14 +61,13 @@ class Ui_MainWindow(object):
         self.btn_start.setMaximumSize(QtCore.QSize(300, 100))
         font = QtGui.QFont()
         font.setFamily("Rubik")
-        font.setPointSize(16)
+        font.setPointSize(14)
         self.btn_start.setFont(font)
         self.btn_start.setStyleSheet("""
         QPushButton{
 			left: calc(50% - 30px);
 			background-color: transparent;
 			border-radius: 6px;
-
 		}
 		QPushButton:hover{
 			background-color: #666;
@@ -79,20 +114,20 @@ class lableWidget(QtWidgets.QLabel):
         if event.mimeData().hasUrls():
             for f in event.mimeData().urls():
                 try:
-                    os.listdir(f.toLocalFile())
+                    for file in os.listdir(f.toLocalFile()):
+                        self.addfile(f.toLocalFile() + "/" + file)
                 except Exception as ex:
-                    print(ex)
-
-                self.addfile(f.toLocalFile())
+                    self.addfile(f.toLocalFile())
+      
 
     def addfile(self, path):
-        if not path in self.files:
+        fileName, fileExt = os.path.splitext(path)
+        if not path in self.files and fileExt == '.xls':
             self.files.append(path)
             str = ''
             for s in self.files:
                 str += os.path.basename(s) + '\n';
             self.setText(str)
-
 
     def dragEnterEvent(self, event) -> None:
         if event.mimeData().hasUrls():
