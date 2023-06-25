@@ -1,7 +1,8 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-#region -- Design --
+
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -105,5 +106,3 @@ class lableWidget(QtWidgets.QLabel):
             event.accept()
         else:
             event.ignore()
-
-#endregion -- Design --
