@@ -65,36 +65,7 @@ QWidget{
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>GroupBox</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>GroupBox</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_4">
-         <property name="title">
-          <string>GroupBox</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_5">
-         <property name="title">
-          <string>GroupBox</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_2"/>
        </item>
       </layout>
      </widget>

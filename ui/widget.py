@@ -1,8 +1,5 @@
-from PySide6.QtWidgets import (QWidget, QLabel, QHBoxLayout,QPushButton)
-from PySide6.QtCore import Signal
-from PySide6.QtCore import QRect
+from PySide6.QtWidgets import (QWidget, QPushButton)
 from ui.base.fileWidget import Ui_Form
-from PySide6.QtCore import Qt
 
 
 class FWidget(QWidget):
@@ -13,6 +10,11 @@ class FWidget(QWidget):
         self.ui.setupUi(self)
         self.id_widget = id_widget
         self.ui.groupBox.setTitle(title)
+        self.ui.groupBox.setStyleSheet("""
+        QGroupBox{
+            border: 1px solid rgba(255, 255, 255, 0.1);;
+        }
+        """)
         self.buttons = []
         self.name = -1
         self.price = -1
@@ -33,7 +35,6 @@ class FWidget(QWidget):
         if self.name < 0 and id != self.price:
             for b in self.buttons:
                 if b.rows ==  id:
-                    self.name = id
                     b.setStyleSheet("""
                     QPushButton{
                         background-color: rgba(7, 105, 12, 0.3);
@@ -41,13 +42,11 @@ class FWidget(QWidget):
                     }
                     """)  
             self.name = id
-            print(f"{self.name} {self.price}")
             return
 
         if self.price < 0 and id != self.name:
             for b in self.buttons:
                 if b.rows == id:
-                    self.name = id
                     b.setStyleSheet("""
                     QPushButton{
                         background-color: rgba(105, 7, 20, 0.3);
@@ -55,7 +54,6 @@ class FWidget(QWidget):
                     }
                     """)  
             self.price = id
-            print(f"{self.name} {self.price}")
             return
         
         for b in self.buttons:
@@ -74,7 +72,6 @@ class FWidget(QWidget):
                 background-color: #888;
             }
             """)   
-        print(f"{self.name} {self.price}")
 
 class Button(QPushButton):
    def __init__(self, text, row):                 

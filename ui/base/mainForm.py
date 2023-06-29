@@ -1,4 +1,3 @@
-
 import os
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
     QSize, Qt)
@@ -39,8 +38,7 @@ def showDialog(msg):
     msgBox.setStandardButtons(QMessageBox.Ok)
     msgBox.show()
     returnValue = msgBox.exec()
-    if returnValue == QMessageBox.Ok:
-        print('OK clicked')
+
 
 
 class Ui_MainWindow(object):
