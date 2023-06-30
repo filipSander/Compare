@@ -7,7 +7,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(771, 507)
+        Dialog.resize(1200, 600)
         Dialog.setStyleSheet(u"    QDialog{\n"
 "        color: white;\n"
 "        background-color: #121212;\n"
