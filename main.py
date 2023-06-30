@@ -12,15 +12,17 @@ app = QApplication()
 Dialog = DialogWin()
 MainWindow = MainWindow()
 
-MainWindow.ui.btn_start.clicked.connect(lambda: test(MainWindow.ui.label.files, True))
-MainWindow.ui.btn_settings.clicked.connect(lambda: test(MainWindow.ui.label.files, False))
+MainWindow.ui.btn_start.clicked.connect(lambda: buttonsClick(MainWindow.ui.label.files, True))
+MainWindow.ui.btn_settings.clicked.connect(lambda: buttonsClick(MainWindow.ui.label.files, False))
 Dialog.ui.buttonBox.rejected.connect(lambda: accept(1))
 Dialog.ui.buttonBox.accepted.connect(lambda: accept(1))
 Dialog.closeEvent = lambda event: accept(event)
+MainWindow.ui.label.drop.connect(lambda: clearfiles())
 
+def clearfiles():
+    Dialog.Clear()
 
-
-def test(files, senderButIsStart):
+def buttonsClick(files, senderButIsStart):
     length = len(files)
     if length == 0:
         showDialog("Файлы для сравнения не выбранны или не соответствуют типу xls, вернитьсь к главному окну и выберите их.")   
@@ -29,16 +31,21 @@ def test(files, senderButIsStart):
     if length != len(Dialog.files):
         Dialog.Clear()
         for path in files:
+            structure = checkFileStructure(path)
+            if structure == None:
+                showDialog("В файле " + os.path.basename(path) + " недостаточно строк (? < 3)")   
+                return
             Dialog.addFile(os.path.basename(path), checkFileStructure(path))
     
     if fileParamsNotSelected() and senderButIsStart:
         showDialog("Параметры файла(ов) не заданны.")   
         MainWindow.hide()
         Dialog.show()
+
     elif senderButIsStart:
         data = compare(files, Dialog.files)
-        if len(data) < 2:
-            showDialog("Параметры файла(ов) заданны неправильно.")
+        if len(data) == 0:
+            showDialog("Параметры файла(ов) заданны неправильно. (Зеленый - строка, красный - число)")
             return
         try:
             writeFile(data) 

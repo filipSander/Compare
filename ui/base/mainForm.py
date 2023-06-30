@@ -1,9 +1,8 @@
 import os
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
-    QSize, Qt)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect, QSize, Qt)
 from PySide6.QtGui import (QFont)
-from PySide6.QtWidgets import (QMessageBox, QLabel, QPushButton,
-    QWidget)
+from PySide6.QtWidgets import (QMessageBox, QLabel, QPushButton, QWidget)
+from PySide6.QtCore import Slot, Signal
 
 def showDialog(msg):
     msgBox = QMessageBox()
@@ -49,12 +48,12 @@ class Ui_MainWindow(object):
         MainWindow.setMinimumSize(QSize(400, 500))
         MainWindow.setMaximumSize(QSize(400, 500))
         MainWindow.setStyleSheet(u"QWidget{\n"
-"	color: white;\n"
-"	background-color: #121212;\n"
-"	font-family: Rubik;\n"
-"	border-radius: 6px;\n"
-"	position: absolute;\n"
-"}")
+        "	color: white;\n"
+        "	background-color: #121212;\n"
+        "	font-family: Rubik;\n"
+        "	border-radius: 6px;\n"
+        "	position: absolute;\n"
+        "}")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
@@ -68,20 +67,20 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.btn_start.setFont(font)
         self.btn_start.setStyleSheet(u"\n"
-"QPushButton{\n"
-"    left: calc(50% - 30px);\n"
-"	background-color: transparent;\n"
-"	border-radius: 6px;\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"    background-color: #666;\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"    background-color: #888;\n"
-"}")
+        "QPushButton{\n"
+        "    left: calc(50% - 30px);\n"
+        "	background-color: transparent;\n"
+        "	border-radius: 6px;\n"
+        "\n"
+        "}\n"
+        "\n"
+        "QPushButton:hover{\n"
+        "    background-color: #666;\n"
+        "}\n"
+        "\n"
+        "QPushButton:pressed{\n"
+        "    background-color: #888;\n"
+        "}")
         self.btn_start.setFlat(True)
 
         self.btn_settings = QPushButton(self.centralwidget)
@@ -94,20 +93,20 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.btn_settings.setFont(font)
         self.btn_settings.setStyleSheet(u"\n"
-"QPushButton{\n"
-"    left: calc(50% - 30px);\n"
-"	background-color: transparent;\n"
-"	border-radius: 6px;\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"    background-color: #666;\n"
-"}\n"
-"\n"
-"QPushButton:pressed{\n"
-"    background-color: #888;\n"
-"}")
+        "QPushButton{\n"
+        "    left: calc(50% - 30px);\n"
+        "	background-color: transparent;\n"
+        "	border-radius: 6px;\n"
+        "\n"
+        "}\n"
+        "\n"
+        "QPushButton:hover{\n"
+        "    background-color: #666;\n"
+        "}\n"
+        "\n"
+        "QPushButton:pressed{\n"
+        "    background-color: #888;\n"
+        "}")
         self.btn_settings.setFlat(True)
         self.label = lableWidget("label",self.centralwidget)
         self.label.setObjectName(u"label")
@@ -141,6 +140,9 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 class lableWidget(QLabel):
+
+    drop = Signal()
+
     def __init__(self,title,parent):
         super().__init__(title,parent)
         self.setAcceptDrops(True)
@@ -154,7 +156,11 @@ class lableWidget(QLabel):
                         self.addfile(f.toLocalFile() + "/" + file)
                 except Exception as ex:
                     self.addfile(f.toLocalFile())
-      
+
+    @Slot()
+    def dropSignal(self):
+        self.drop.emit()
+        print("drop")
 
     def addfile(self, path):
         fileName, fileExt = os.path.splitext(path)
@@ -164,11 +170,13 @@ class lableWidget(QLabel):
             for s in self.files:
                 str += os.path.basename(s) + '\n';
             self.setText(str)
+            
 
     def dragEnterEvent(self, event) -> None:
         if event.mimeData().hasUrls():
             event.accept()
             self.files = []
+            self.dropSignal()
         else:
             event.ignore()
     

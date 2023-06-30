@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QMainWindow
-from PySide6.QtCore import Slot, Signal
-
 from ui.base.mainForm import Ui_MainWindow
+from PySide6 import QtCore
 
 
 class MainWindow(QMainWindow):
@@ -10,4 +9,5 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint)
         

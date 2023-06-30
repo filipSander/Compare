@@ -9,16 +9,20 @@ def checkFileStructure(path):
     sheet = book.sheet_by_index(0)
 
     rows = []
-    for i in range(0, 3):
-        ceils = []
-        for c in sheet.row(i):
-            if c.ctype == 2:
-                ceils.append(str(round(c.value, 2)))
-            elif c.ctype != 0: 
-                ceils.append(str(c.value))
+    try:
+        for i in range(0, 3):
+            ceils = []
+            for c in sheet.row(i):
+                if c.ctype == 2:
+                    ceils.append(str(round(c.value, 2)))
+                elif c.ctype != 0: 
+                    ceils.append(str(c.value))
 
-        rows.append(ceils)
-        
+            rows.append(ceils)
+    
+    except Exception:
+        return None
+
     return rows
 
 def compare(files, params):
